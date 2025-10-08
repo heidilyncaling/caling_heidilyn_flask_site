@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="works">
+    <h2>My Works</h2>
+    <p>Here are some small Python-based tools built using Flask:</p>
+
+    <!-- To Uppercase -->
+    <div class="tool">
+        <h3>To Uppercase Converter</h3>
+        <form method="POST">
+            <input type="text" name="text" placeholder="Enter text..." required>
+            <button type="submit">Convert</button>
+        </form>
+        {% if uppercase_result %}
+            <p><strong>Result:</strong> {{ uppercase_result }}</p>
+        {% endif %}
+    </div>
+
+    <!-- Area of Circle -->
+    <div class="tool">
+        <h3>Area of Circle</h3>
+        <form method="POST">
+            <input type="number" step="any" name="radius" placeholder="Enter radius..." required>
+            <button type="submit">Compute</button>
+        </form>
+        {% if circle_area %}
+            <p><strong>Area:</strong> {{ circle_area }}</p>
+        {% endif %}
+    </div>
+
+    <!-- Area of Triangle -->
+    <div class="tool">
+        <h3>Area of Triangle</h3>
+        <form method="POST">
+            <input type="number" step="any" name="base" placeholder="Enter base..." required>
+            <input type="number" step="any" name="height" placeholder="Enter height..." required>
+            <button type="submit">Compute</button>
+        </form>
+        {% if triangle_area %}
+            <p><strong>Area:</strong> {{ triangle_area }}</p>
+        {% endif %}
+    </div>
+
+</section>
+{% endblock %}

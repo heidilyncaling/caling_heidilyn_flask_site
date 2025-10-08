@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Convert to Uppercase</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!-- Header with Navbar -->
+    <header>
+        <h1>WELCOME TO MY FLASK</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/contact">Contact</a></li>
+                <li><a href="/works">Works</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <h2>Convert Text to Uppercase</h2>
+        <form method="POST">
+            <input type="text" name="inputString" placeholder="Enter text here" required>
+            <button type="submit">Convert</button>
+        </form>
+
+        {% if result %}
+            <h3>Result:</h3>
+            <p class="result-text">{{ result }}</p>
+        {% endif %}
+    </main>
+
+</body>
+</html>

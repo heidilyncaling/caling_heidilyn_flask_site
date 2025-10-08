@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Area of Circle</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!-- Header with Navbar -->
+    <header>
+        <h1>WELCOME TO MY FLASK</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/contact">Contact</a></li>
+                <li><a href="/works">Works</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <h2>Calculate Area of a Circle</h2>
+
+        <form method="POST">
+            <input type="number" name="radius" step="any" placeholder="Enter radius" required>
+            <button type="submit">Calculate</button>
+        </form>
+
+        {% if area %}
+            <h3 style="margin-top:20px; color:#6a0dad;">Result:</h3>
+            <p style="font-weight:bold; font-size:18px; color:#5d0ca6;">Area = {{ area }}</p>
+        {% endif %}
+    </main>
+
+</body>
+</html>

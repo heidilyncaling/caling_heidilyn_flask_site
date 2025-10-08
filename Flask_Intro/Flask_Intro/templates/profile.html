@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="profile">
+    <h2>Heidilyn L. Caling</h2>
+    <img src="{{ url_for('static', filename='images/profile.jpg') }}" 
+         alt="Profile Picture" 
+         width="200" 
+         class="profile-pic">
+
+    <p><b>Section:</b> 2-2</p>
+    <p><b>Course:</b> Bachelor of Science in Computer Engineering</p>
+    <p><b>Subject:</b> Data Structures and Algorithms</p>
+
+    <blockquote>
+        “Everything happens for a reason, but it’s important to seek out that reason — that’s how we learn.”
+    </blockquote>
+</section>
+{% endblock %}
