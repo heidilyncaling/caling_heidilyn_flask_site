@@ -1,46 +1,213 @@
-{% extends 'base.html' %}
-
+{% extends "base.html" %}
 {% block content %}
-<section class="works">
-    <h2>My Works</h2>
-    <p>Here are some small Python-based tools built using Flask:</p>
+<main>
+  <h1>MY WORKS</h1>
+  <p>Here are some small Python-based tools built using Flask:</p>
 
-    <!-- To Uppercase -->
-    <div class="tool">
-        <h3>To Uppercase Converter</h3>
-        <form method="POST">
-            <input type="text" name="text" placeholder="Enter text..." required>
-            <button type="submit">Convert</button>
-        </form>
-        {% if uppercase_result %}
-            <p><strong>Result:</strong> {{ uppercase_result }}</p>
+  <!-- Tabs -->
+  <div class="tab-container">
+    <button class="tab active" onclick="openTab('uppercase')">To Uppercase Converter</button>
+    <button class="tab" onclick="openTab('circle')">Area of Circle</button>
+    <button class="tab" onclick="openTab('triangle')">Area of Triangle</button>
+    <button class="tab" onclick="openTab('linkedlist')">Linked List Operations</button>
+  </div>
+
+  <!-- Uppercase -->
+  <div id="uppercase" class="tab-content active">
+    <form method="POST">
+      <input type="text" name="text" placeholder="Enter text..." required>
+      <button type="submit">Convert</button>
+    </form>
+    {% if uppercase_result %}
+      <p>Result: {{ uppercase_result }}</p>
+    {% endif %}
+  </div>
+
+  <!-- Circle -->
+  <div id="circle" class="tab-content">
+    <form method="POST">
+      <input type="number" name="radius" placeholder="Enter radius..." required>
+      <button type="submit">Compute</button>
+    </form>
+    {% if circle_area %}
+      <p>Area: {{ circle_area }}</p>
+    {% endif %}
+  </div>
+
+  <!-- Triangle -->
+  <div id="triangle" class="tab-content">
+    <form method="POST">
+      <input type="number" name="base" placeholder="Enter base..." required>
+      <input type="number" name="height" placeholder="Enter height..." required>
+      <button type="submit">Compute</button>
+    </form>
+    {% if triangle_area %}
+      <p>Area: {{ triangle_area }}</p>
+    {% endif %}
+  </div>
+
+  <!-- 🍣 Linked List -->
+  <div id="linkedlist" class="tab-content">
+    <h2>🍣 Linked List - Sushi Steps</h2>
+
+    <div class="list-box">
+      <h3>Current Steps:</h3>
+      <div class="steps">
+        {% if linked_list_items %}
+          <p>{{ " → ".join(linked_list_items) }} → X</p>
+        {% else %}
+          <p>X (No more steps!)</p>
         {% endif %}
-    </div>
+      </div>
 
-    <!-- Area of Circle -->
-    <div class="tool">
-        <h3>Area of Circle</h3>
-        <form method="POST">
-            <input type="number" step="any" name="radius" placeholder="Enter radius..." required>
-            <button type="submit">Compute</button>
+      {% if ll_message %}
+        <p class="message">{{ ll_message }}</p>
+      {% endif %}
+
+      <div class="actions">
+        <form method="POST" class="action-form">
+          <input type="hidden" name="action" value="add">
+          <input type="text" name="data" placeholder="Enter new step">
+          <button type="submit">Add Step</button>
         </form>
-        {% if circle_area %}
-            <p><strong>Area:</strong> {{ circle_area }}</p>
-        {% endif %}
-    </div>
 
-    <!-- Area of Triangle -->
-    <div class="tool">
-        <h3>Area of Triangle</h3>
-        <form method="POST">
-            <input type="number" step="any" name="base" placeholder="Enter base..." required>
-            <input type="number" step="any" name="height" placeholder="Enter height..." required>
-            <button type="submit">Compute</button>
+        <form method="POST" class="action-form">
+          <input type="hidden" name="action" value="remove_beginning">
+          <button type="submit">Remove Beginning</button>
         </form>
-        {% if triangle_area %}
-            <p><strong>Area:</strong> {{ triangle_area }}</p>
-        {% endif %}
-    </div>
 
-</section>
+        <form method="POST" class="action-form">
+          <input type="hidden" name="action" value="remove_end">
+          <button type="submit">Remove End</button>
+        </form>
+
+        <form method="POST" class="action-form">
+          <input type="hidden" name="action" value="remove_at">
+          <input type="text" name="data" placeholder="Enter step name to remove">
+          <button type="submit">Remove Specific Step</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+function openTab(tabId) {
+  // Hide all tabs
+  document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(btn => btn.classList.remove('active'));
+
+  // Show selected tab
+  document.getElementById(tabId).classList.add('active');
+  event.currentTarget.classList.add('active');
+
+  // Save current tab to URL hash
+  window.location.hash = tabId;
+}
+
+// When page loads, open the correct tab based on the hash
+window.addEventListener('load', () => {
+  const hash = window.location.hash.substring(1); // remove '#'
+  if (hash && document.getElementById(hash)) {
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(hash).classList.add('active');
+    document.querySelector(`button[onclick="openTab('${hash}')"]`).classList.add('active');
+  }
+});
+</script>
+
+<style>
+main {
+  text-align: center;
+  padding: 20px;
+}
+
+.tab-container {
+  margin-bottom: 20px;
+}
+
+.tab {
+  background: #7b00b4;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.tab.active {
+  background: #d199ff;
+  color: #3c0069;
+}
+
+.tab-content {
+  display: none;
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.tab-content.active {
+  display: block;
+}
+
+/* 🍣 Sushi Linked List styling */
+.list-box {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  max-width: 500px;
+  margin: 20px auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.list-box h3 {
+  color: #3c0069;
+}
+.steps {
+  background: #f4f0ff;
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+.message {
+  color: #008000;
+  font-weight: bold;
+}
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+.action-form {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+input {
+  padding: 8px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  min-width: 180px;
+}
+button {
+  background: #7b00b4;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+button:hover {
+  background: #50007c;
+}
+</style>
 {% endblock %}

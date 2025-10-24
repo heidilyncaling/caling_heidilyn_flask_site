@@ -97,11 +97,65 @@ blockquote {
     border-radius: 10px;
 }
 
-/* ===== Works Page ===== */
+/* ===== Works Page (Boxes Layout) ===== */
 .works {
     text-align: center;
+    padding: 40px;
 }
 
+.works h2 {
+    font-size: 2em;
+    font-weight: bold;
+    color: #5b2d91;
+    margin-bottom: 10px;
+}
+
+.works .subtitle {
+    color: #555;
+    margin-bottom: 40px;
+}
+
+.work-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    justify-content: center;
+    align-items: stretch;
+    padding: 0 20px;
+}
+
+.work-box {
+    display: block;
+    text-decoration: none;
+    color: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.work-box:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* Purple Gradients */
+.gradient1 { background: linear-gradient(135deg, #a06cd5, #6b4de6); }
+.gradient2 { background: linear-gradient(135deg, #b48bf0, #805ad5); }
+.gradient3 { background: linear-gradient(135deg, #c19ee0, #7e57c2); }
+.gradient4 { background: linear-gradient(135deg, #d4a5ff, #9b5de5); }
+
+.work-box h3 {
+    font-size: 1.3em;
+    margin-bottom: 8px;
+}
+
+.work-box p {
+    font-size: 0.95em;
+    color: #f3eaff;
+}
+
+/* ===== Old Tools Layout (Fallback if Needed) ===== */
 .tool {
     background: #ffffff;
     border-radius: 15px;
@@ -185,4 +239,86 @@ blockquote {
     .home p, blockquote {
         width: 90%;
     }
+
+    .work-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== Works Grid (Menu) ===== */
+.works-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+    padding: 0 10%;
+}
+
+.work-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    border-radius: 20px;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+    transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.work-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Different purple shades for each box */
+.purple1 { background: #b57edc; }
+.purple2 { background: #a64ca6; }
+.purple3 { background: #9932cc; }
+.purple4 { background: #7a1fa2; }
+
+/* ===== Updated Works Page (1 Box per Row, Gradient Purple) ===== */
+.work-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.work-card {
+    display: block;
+    width: 100%;
+    padding: 35px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #d8b4fe, #7e22ce);
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-decoration: none;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.work-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 12px 20px rgba(126, 34, 206, 0.3);
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 40px;
+    color: #4a2b7b;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.back-link:hover {
+    color: #7e22ce;
 }

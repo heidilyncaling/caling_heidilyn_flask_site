@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🍣 Linked List - Sushi Steps</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f3fa;
+      color: #333;
+      margin: 0;
+      padding: 30px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #5b009c;
+      margin-bottom: 10px;
+    }
+
+    .list-box {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      max-width: 500px;
+      margin: 20px auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .list-box h3 {
+      color: #3c0069;
+    }
+
+    .steps {
+      background: #f4f0ff;
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: 500;
+      margin-bottom: 15px;
+    }
+
+    .message {
+      color: #008000;
+      font-weight: bold;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .action-form {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    input {
+      padding: 8px 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      min-width: 180px;
+    }
+
+    button {
+      background: #7b00b4;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #50007c;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 25px;
+      color: #7b00b4;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>🍣 Linked List - Sushi Steps</h1>
+
+  <div class="list-box">
+    <h3>Current Steps:</h3>
+    <div class="steps">
+      {% if steps %}
+        <p>{{ " → ".join(steps) }} → X</p>
+      {% else %}
+        <p>X (No more steps!)</p>
+      {% endif %}
+    </div>
+
+    {% if message %}
+      <p class="message">{{ message }}</p>
+    {% endif %}
+
+    <div class="actions">
+      <form method="POST" class="action-form">
+        <input type="hidden" name="action" value="add">
+        <input type="text" name="data" placeholder="Enter new step">
+        <button type="submit">Add Step</button>
+      </form>
+
+      <form method="POST" class="action-form">
+        <input type="hidden" name="action" value="remove_beginning">
+        <button type="submit">Remove Beginning</button>
+      </form>
+
+      <form method="POST" class="action-form">
+        <input type="hidden" name="action" value="remove_end">
+        <button type="submit">Remove End</button>
+      </form>
+
+      <form method="POST" class="action-form">
+        <input type="hidden" name="action" value="remove_at">
+        <input type="text" name="data" placeholder="Enter step name to remove">
+        <button type="submit">Remove Specific Step</button>
+      </form>
+    </div>
+  </div>
+
+  <a href="/">← Back to Home</a>
+</body>
+</html>
