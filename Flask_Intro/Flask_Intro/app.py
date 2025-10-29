@@ -3,7 +3,7 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 
 # =====================================================
-# LINKED LIST LOGIC (your full working version below)
+# LINKED LIST LOGIC
 # =====================================================
 class Node:
     def __init__(self, data: str):
@@ -23,17 +23,27 @@ class LinkedList:
             current = current.next
         return steps
 
+    def add(self, data: str):
+        node = Node(data)
+        if not self.head:
+            self.head = node
+        else:
+            current = self.head
+            while current.next:
+                current = current.next
+            current.next = node
+
     def remove_beginning(self):
-        if self.head is None:
+        if not self.head:
             return None
-        removed_data = self.head.data
+        removed = self.head.data
         self.head = self.head.next
-        return removed_data
+        return removed
 
     def remove_at_end(self):
-        if self.head is None:
+        if not self.head:
             return None
-        if self.head.next is None:
+        if not self.head.next:
             removed = self.head.data
             self.head = None
             return removed
@@ -45,7 +55,7 @@ class LinkedList:
         return removed
 
     def remove_at(self, data: str):
-        if self.head is None:
+        if not self.head:
             return None
         if self.head.data == data:
             removed = self.head.data
@@ -54,21 +64,11 @@ class LinkedList:
         current = self.head
         while current.next and current.next.data != data:
             current = current.next
-        if current.next is None:
+        if not current.next:
             return None
         removed = current.next.data
         current.next = current.next.next
         return removed
-
-    def add(self, data: str):
-        node = Node(data)
-        if self.head is None:
-            self.head = node
-            return
-        current = self.head
-        while current.next:
-            current = current.next
-        current.next = node
 
 
 def setup_sample_steps():
@@ -95,13 +95,79 @@ def normalize_step_input(inp: str):
     return inp
 
 
-# Global Linked List instance
 sushi_steps = setup_sample_steps()
+
+# =====================================================
+# STACK + INFIX → POSTFIX LOGIC
+# =====================================================
+class StackNode:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+
+class Stack:
+    def __init__(self):
+        self.top = None
+
+    def push(self, data):
+        new_node = StackNode(data)
+        new_node.next = self.top
+        self.top = new_node
+
+    def pop(self):
+        if not self.top:
+            return None
+        popped = self.top.data
+        self.top = self.top.next
+        return popped
+
+    def peek(self):
+        return self.top.data if self.top else None
+
+    def is_empty(self):
+        return self.top is None
+
+
+def precedence(op):
+    return {'^': 3, '*': 2, '/': 2, '+': 1, '-': 1}.get(op, 0)
+
+
+def is_left_associative(op):
+    return op in ('+', '-', '*', '/')
+
+
+def infix_to_postfix(expression):
+    stack = Stack()
+    output = []
+
+    for char in expression:
+        if char == ' ':
+            continue
+        elif char.isalnum():
+            output.append(char)
+        elif char == '(':
+            stack.push(char)
+        elif char == ')':
+            while not stack.is_empty() and stack.peek() != '(':
+                output.append(stack.pop())
+            stack.pop()
+        else:  # operator
+            while (not stack.is_empty() and
+                   (precedence(stack.peek()) > precedence(char) or
+                    (precedence(stack.peek()) == precedence(char) and is_left_associative(char))) and
+                   stack.peek() != '('):
+                output.append(stack.pop())
+            stack.push(char)
+
+    while not stack.is_empty():
+        output.append(stack.pop())
+
+    return ' '.join(output)
 
 # =====================================================
 # ROUTES
 # =====================================================
-
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -124,13 +190,17 @@ def works():
     circle_area = ''
     triangle_area = ''
     ll_message = ''
+    result = ''
+    active_tab = 'uppercase'  # default tab
 
     if request.method == 'POST':
         form = request.form
+        active_tab = form.get('active_tab', 'uppercase')
 
         # ---------- UPPERCASE ----------
         if 'text' in form:
             uppercase_result = form.get('text', '').upper()
+            active_tab = 'uppercase'
 
         # ---------- CIRCLE AREA ----------
         elif 'radius' in form:
@@ -139,6 +209,7 @@ def works():
                 circle_area = round(3.1416 * r * r, 2)
             except ValueError:
                 circle_area = 'Invalid input.'
+            active_tab = 'circle'
 
         # ---------- TRIANGLE AREA ----------
         elif 'base' in form and 'height' in form:
@@ -148,11 +219,13 @@ def works():
                 triangle_area = round(0.5 * b * h, 2)
             except ValueError:
                 triangle_area = 'Invalid input.'
+            active_tab = 'triangle'
 
         # ---------- LINKED LIST ----------
         elif 'action' in form:
             action = form.get('action')
             data = form.get('data', '').strip()
+            active_tab = 'linkedlist'
 
             if action == 'add' and data:
                 sushi_steps.add(data)
@@ -170,14 +243,26 @@ def works():
             else:
                 ll_message = "⚠️ Invalid or missing input."
 
+        # ---------- INFIX → POSTFIX ----------
+        elif 'expression' in form:
+            expr = form.get('expression', '')
+            active_tab = 'infix'
+            if expr:
+                result = infix_to_postfix(expr)
+
     return render_template(
         'works.html',
         uppercase_result=uppercase_result,
         circle_area=circle_area,
         triangle_area=triangle_area,
         linked_list_items=sushi_steps.display(),
-        ll_message=ll_message
+        ll_message=ll_message,
+        result=result,
+        active_tab=active_tab
     )
 
+# =====================================================
+# MAIN
+# =====================================================
 if __name__ == '__main__':
     app.run(debug=True)

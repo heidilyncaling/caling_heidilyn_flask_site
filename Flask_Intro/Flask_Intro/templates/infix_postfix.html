@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="converter-container">
+    <h2>Infix to Postfix Converter</h2>
+    <p>Enter an infix expression (example: A + B * C) to convert it into postfix form.</p>
+
+    <form method="POST" action="{{ url_for('infix_postfix') }}">
+        <input type="text" name="expression" placeholder="Enter infix expression" required>
+        <button type="submit">Convert</button>
+    </form>
+
+    {% if result %}
+    <div class="result-box">
+        <h3>Postfix Expression:</h3>
+        <p>{{ result }}</p>
+    </div>
+    {% endif %}
+</main>
+{% endblock %}
